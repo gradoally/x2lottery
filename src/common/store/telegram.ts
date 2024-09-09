@@ -1,11 +1,12 @@
 import { Reactive, reactive } from "vue";
 import { TonConnectUI, TonConnectUiOptions, Account } from "@tonconnect/ui";
-import { SendTransactionRequest } from "@tonconnect/ui";
-import { InitDataParsed, retrieveLaunchParams } from '@telegram-apps/sdk';
-import { beginCell, toNano } from "@ton/ton";
+import { InitDataParsed, retrieveLaunchParams } from "@telegram-apps/sdk";
+import { Address, toNano, TonClient } from "@ton/ton";
+import { HeadsOrTails } from "../../wrappers/HeadsOrTails";
+import { TonConnectSender } from "../../wrappers/TonConnectSender";
 
 interface Telegram {
-  walletAccount: Account | null;
+  walletAccount: Account | null | undefined;
   tonConnectUI: TonConnectUI | null;
   initDataRaw: string | undefined | null;
   initData: InitDataParsed | undefined | null;
@@ -13,7 +14,7 @@ interface Telegram {
   initTelegramData: () => void;
   initWallet: () => Promise<void>;
   initConnectWalletButton: (buttonRootId: string | null) => Promise<void>;
-  sendTransaction: (transaction: SendTransactionRequest) => Promise<void>;
+  playGame: (amount: number) => Promise<void>;
 }
 
 export const Telegram: Reactive<Telegram> = reactive<Telegram>({
@@ -32,7 +33,13 @@ export const Telegram: Reactive<Telegram> = reactive<Telegram>({
     this.initData = launchParams.initData;
   },
   async initWallet() {
-    await TonConnectUI.getWallets();
+    await this.tonConnectUI?.getWallets();
+
+    console.log(this.tonConnectUI);
+
+    this.walletAccount = this.tonConnectUI?.account;
+
+    console.log(this.walletAccount);
   },
   async initConnectWalletButton(buttonRootId: string | null) {
     this.tonConnectUI = new TonConnectUI({
@@ -40,31 +47,46 @@ export const Telegram: Reactive<Telegram> = reactive<Telegram>({
       buttonRootId: buttonRootId,
     });
 
-    await this.initWallet();
-
-    this.walletAccount = this.tonConnectUI.account;
-
     this.tonConnectUI.uiOptions = {
       twaReturnUrl: import.meta.env.VITE_TELEGRAM_BOT_URL,
     } as TonConnectUiOptions;
+
+    this.tonConnectUI.onModalStateChange(async (state) => {
+      console.log(state);
+
+      if (
+        state.status === "closed" &&
+        state.closeReason === "wallet-selected"
+      ) {
+        await this.initWallet();
+      }
+    });
+
+    this.tonConnectUI.onStatusChange((status) => {
+      if(!status) {
+        this.walletAccount = null;
+      }
+    });
+
+    console.log(this.tonConnectUI);
   },
-  async sendTransaction() {
-    const body = beginCell()
-      .storeUint(0, 32) // write 32 zero bits to indicate that a text comment will follow
-      .storeStringTail("Test transaction") // write our text comment
-      .endCell();
+  async playGame(amount: number) {
+    const collectionAddress = import.meta.env.VITE_TON_CONTRACT_ADDRESS;
+    const address = Address.parse(collectionAddress);
 
-    const transaction = {
-      validUntil: Math.floor(Date.now() / 1000) + 360,
-      messages: [
-        {
-          address: import.meta.env.VITE_TON_CONTRACT_ADDRESS,
-          amount: toNano(0.05).toString(),
-          payload: body.toBoc().toString("base64"),
-        },
-      ],
-    };
+    const tonClient = new TonClient({
+      endpoint: "https://toncenter.com/api/v2/jsonRPC",
+    });
 
-    await this.tonConnectUI?.sendTransaction(transaction);
+    const contractProvider = tonClient.open(
+      HeadsOrTails.createFromAddress(address)
+    );
+
+    if (this.tonConnectUI) {
+      return await contractProvider.sendBet(
+        new TonConnectSender(this.tonConnectUI),
+        toNano(amount)
+      );
+    }
   },
 });

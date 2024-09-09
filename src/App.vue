@@ -4,8 +4,6 @@ import { useRouter } from 'vue-router'
 
 import { store } from './common/store'
 
-import Navbar from './components/common/Navbar.vue'
-
 const router = useRouter()
 
 const loading = ref(true);
@@ -33,23 +31,6 @@ onMounted(async () => {
           </keep-alive>
         </router-view>
       </div>
-      <div id="navbar-container" v-if="!loading" class="relative p-3 bg-black">
-        <Navbar class="relative z-20"></Navbar>
-      </div>
     </div>
   </div>
 </template>
-
-<style>
-#navbar-container::before {
-  content: "";
-  position: absolute;
-  height: 40px;
-  top: -40px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
-  z-index: 10;
-}
-</style>

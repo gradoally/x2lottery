@@ -7,9 +7,6 @@ services:
       dockerfile: Dockerfile
     expose:
       - 80
-    environment:
-      VIRTUAL_HOST: disclosuregame.thebatclaud.io
-      LETSENCRYPT_HOST: disclosuregame.thebatclaud.io
     volumes:
       - .:/app
       - /app/node_modules
