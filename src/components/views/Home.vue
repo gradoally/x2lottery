@@ -52,21 +52,53 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="text-center flex flex-col h-full pt-10">
+  <div class="text-center flex flex-col h-full">
     <div class="text-center text-3xl uppercase p-5">
       <button id="ton-connect-button" type="button"></button>
     </div>
-    <div class="flex-1 flex flex-col justify-center content-center">
+    <div class="flex flex-col justify-center content-center">
       <div class="flex justify-center">
         <div id="coin">
           <div id="front"><img src="/icon.png" class="pulse w-[60vw]"></div>
           <div id="back"><img src="/loser.png" class="pulse w-[60vw]"></div>
         </div>
       </div>
-      <div class="mt-12">
-        <Button @click="playGame()" :disabled="!store.telegram.walletAccount">
-          Bet
-        </Button>
+      <div class="mt-6">
+        <form class="max-w-xs mx-auto">
+          <label for="quantity-input" class="block mb-2 text-sm font-medium text-white">Your bet:</label>
+          <div class="flex justify-center">
+            <div class="relative flex items-center max-w-[8rem]">
+              <button type="button" @click="amount--"
+                class="bg-blue-800 0 border-blue-900 rounded-s-lg p-3 h-11 focus:ring-blue-700 dark:focus:ring-blue-700 focus:ring-2 focus:outline-none">
+                <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                  fill="none" viewBox="0 0 18 2">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M1 1h16" />
+                </svg>
+              </button>
+              <input type="number" v-model="amount" data-input-counter aria-describedby="helper-text-explanation"
+                class="bg-blue-50 border-x-0 border-blue-300 h-11 text-center text-gray-900 font-bold text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-blue-700 dark:border-blue-600 dark:placeholder-blue-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="1" required />
+              <button type="button" @click="amount++"
+                class="bg-blue-800 0 border-blue-900 rounded-e-lg p-3 h-11 focus:ring-blue-700 dark:focus:ring-blue-700 focus:ring-2 focus:outline-none">
+                <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                  fill="none" viewBox="0 0 18 18">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 1v16M1 9h16" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <p id="helper-text-explanation" class="mt-4 text-sm text-gray-400">Min: 1 TON</p>
+          <p id="helper-text-explanation" class="text-sm text-gray-400">Max: 10 TON</p>
+        </form>
+
+        <div class="mt-5">
+          <Button @click="playGame()" :disabled="!store.telegram.walletAccount">
+            Bet
+          </Button>
+        </div>
         <div v-if="!store.telegram.walletAccount" class="mt-4 text-xs text-orange-500">
           Connect your TON wallet to play
         </div>
