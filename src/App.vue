@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { store } from './common/store'
+import MoneyBackground from './components/common/MoneyBackground.vue';
 
 const router = useRouter()
 
@@ -21,6 +22,7 @@ onMounted(async () => {
 </script>
 
 <template>
+  <MoneyBackground />
 
   <div class="relative z-10">
     <div class="flex flex-col h-[100vh]">

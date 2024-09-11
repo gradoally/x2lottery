@@ -31,7 +31,7 @@ const click = () => {
 </script>
 
 <template>
-  <button :class="classObject" class="rounded-md uppercase disabled:bg-gray-500" @click="click" :disabled="props.disabled">
+  <button :class="classObject" class="text-xl font-black py-4 px-10 rounded-md uppercase disabled:bg-gray-500" @click="click" :disabled="props.disabled">
     <slot></slot>
   </button>
 </template>
