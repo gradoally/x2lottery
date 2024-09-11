@@ -54,13 +54,13 @@ const viewTransaction = () => {
 
 const incrementAmount = () => {
   if (amount.value + 0.1 <= (max_bet.value)) {
-    amount.value = (amount.value + 0.1)
+    amount.value = parseFloat((amount.value + 0.1).toFixed(1))
   }
 }
 
 const decrementAmount = () => {
   if (amount.value - 0.1 >= (min_bet.value)) {
-    amount.value = (amount.value - 0.1)
+    amount.value = parseFloat((amount.value - 0.1).toFixed(1))
   }
 }
 
