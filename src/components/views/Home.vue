@@ -1,6 +1,5 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { initHapticFeedback } from '@telegram-apps/sdk';
 import { FaceSmileIcon } from '@heroicons/vue/24/solid';
 import { HeadsOrTails } from '../../wrappers/HeadsOrTails';
 import Modal from '../modals/Modal.vue';
@@ -8,8 +7,6 @@ import Button from '../common/Button.vue';
 import { store } from '../../common/store';
 
 const jettonSymbol = ref(import.meta.env.VITE_JETTON_SYMBOL);
-
-const hapticFeedback = initHapticFeedback();
 
 const amount = ref(1);
 
@@ -56,7 +53,6 @@ const viewTransaction = () => {
 }
 
 const incrementAmount = () => {
-  console.log('increment');
   if (amount.value + 0.1 <= (max_bet.value)) {
     amount.value = (amount.value + 0.1)
   }

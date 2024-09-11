@@ -33,10 +33,13 @@ export const Telegram: Reactive<Telegram> = reactive<Telegram>({
     this.initClient();
   },
   initTelegramData() {
-    const launchParams = retrieveLaunchParams();
-
-    this.initDataRaw = launchParams.initDataRaw;
-    this.initData = launchParams.initData;
+    try {
+      const launchParams = retrieveLaunchParams();
+      this.initDataRaw = launchParams.initDataRaw;
+      this.initData = launchParams.initData;
+    } catch (e) {
+      console.log('not in telegram app');
+    }
   },
   async initWallet() {
     await this.tonConnectUI?.getWallets();
