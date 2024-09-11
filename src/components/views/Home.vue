@@ -53,6 +53,14 @@ const viewTransaction = () => {
   modalOpen.value = false;
 }
 
+const incrementAmount = () => {
+  amount.value += 0.1;
+}
+
+const decrementAmount = () => {
+  amount.value -= 0.1;
+}
+
 onMounted(async () => {
   await store.telegram.initConnectWalletButton('ton-connect-button')
 
@@ -84,7 +92,7 @@ onMounted(async () => {
           <div class="flex justify-center">
             <div class="relative flex items-center max-w-[8rem]">
 
-              <button type="button" @click="amount--" class="bg-blue-800 0 border-blue-900 rounded-s-lg p-3 h-11 mr-1">
+              <button type="button" @click="incrementAmount()" class="bg-blue-800 0 border-blue-900 rounded-s-lg p-3 h-11 mr-1">
                 <svg class="w-3 h-3 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                   fill="none" viewBox="0 0 18 2">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -96,7 +104,7 @@ onMounted(async () => {
                 class="bg-blue-50 border-x-0 h-11 focus:border-none text-center text-gray-900 font-bold text-sm block w-full py-2.5"
                 placeholder="1" required />
 
-              <button type="button" @click="amount++" class="bg-blue-800 0 border-blue-900 rounded-e-lg p-3 h-11 ml-1">
+              <button type="button" @click="decrementAmount()" class="bg-blue-800 0 border-blue-900 rounded-e-lg p-3 h-11 ml-1">
                 <svg class="w-3 h-3 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                   fill="none" viewBox="0 0 18 18">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
