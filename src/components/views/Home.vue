@@ -54,11 +54,15 @@ const viewTransaction = () => {
 }
 
 const incrementAmount = () => {
-  amount.value += 0.1;
+  if(amount.value + 0.1 <= max_bet) {
+    amount.value += 0.1;
+  }
 }
 
 const decrementAmount = () => {
-  amount.value -= 0.1;
+  if(amount.value - 0.1 >= min_bet) {
+    amount.value -= 0.1;
+  }
 }
 
 onMounted(async () => {
