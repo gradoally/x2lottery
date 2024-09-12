@@ -1,5 +1,5 @@
 import { createApp } from "vue";
-import { createWebHistory, createRouter } from "vue-router";
+import { createWebHashHistory, createRouter } from "vue-router";
 import WebApp from "@twa-dev/sdk";
 import Vue3TouchEvents, {
   type Vue3TouchEventsOptions,
@@ -25,7 +25,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(getBasePath()),
+  history: createWebHashHistory(getBasePath()),
   routes,
 });
 
