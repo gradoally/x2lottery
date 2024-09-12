@@ -92,7 +92,7 @@ onMounted(async () => {
     <div class="flex flex-col justify-center content-center">
       <div class="flex justify-center">
         <div>
-          <div id="front"><img src="/icon.png" class="pulse h-[30vh]"></div>
+          <div id="front" @click="playGame()"><img src="/icon.png" class="pulse h-[30vh]"></div>
         </div>
       </div>
       <div class="mt-6">
