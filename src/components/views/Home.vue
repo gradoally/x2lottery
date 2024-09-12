@@ -5,6 +5,7 @@ import { HeadsOrTails } from '../../wrappers/HeadsOrTails';
 import Modal from '../modals/Modal.vue';
 import Button from '../common/Button.vue';
 import { store } from '../../common/store';
+import { initHapticFeedback } from '@telegram-apps/sdk';
 
 const jettonSymbol = ref(import.meta.env.VITE_JETTON_SYMBOL);
 
@@ -34,6 +35,12 @@ let currentDegrees = 0;
 
 const playGame = async () => {
   if (isFlipping) return;
+
+  try {
+    const hapticFeedback = initHapticFeedback();
+
+    hapticFeedback.impactOccurred('heavy');
+  } catch {}
 
   lastTransactionId = await store.telegram.playGame(amount.value);
 
