@@ -1,9 +1,11 @@
 import { Address, beginCell, Sender, SenderArguments, SendMode, storeStateInit } from "@ton/ton";
-import { TonConnectUI } from "@tonconnect/ui";
+import { SendTransactionResponse, TonConnectUI } from "@tonconnect/ui";
 
 export class TonConnectSender implements Sender {
   #provider: TonConnectUI;
   readonly address?: Address;
+
+  lastTransactionResponse?: SendTransactionResponse;
 
   constructor(provider: TonConnectUI) {
     this.#provider = provider;
@@ -16,7 +18,7 @@ export class TonConnectSender implements Sender {
       throw new Error("Deployer sender does not support `sendMode` other than `PAY_GAS_SEPARATELY`");
     }
 
-    await this.#provider.sendTransaction({
+    this.lastTransactionResponse = await this.#provider.sendTransaction({
       validUntil: Date.now() + 5 * 60 * 1000,
       messages: [
         {

@@ -7,6 +7,22 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
     />
+
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=%VITE_GTAG_ID%"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "%VITE_GTAG_ID%");
+    </script>
+
     <title>x2Lottery</title>
   </head>
   <body class="bg-gray-950 text-white h-screen select-none">
