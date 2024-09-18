@@ -62,20 +62,28 @@ const viewTransaction = () => {
 const incrementAmount = () => {
   if(!store.telegram.walletAccount) {
     store.telegram.tonConnectUI.openModal();
+
+    return;
   }
 
-  if (amount.value + 0.1 <= (max_bet.value)) {
-    amount.value = parseFloat((amount.value + 0.1).toFixed(1))
+  const newAmountValue = parseFloat((amount.value + 0.1).toFixed(1));
+
+  if (newAmountValue <= (max_bet.value)) {
+    amount.value = newAmountValue;
   }
 }
 
 const decrementAmount = () => {
   if(!store.telegram.walletAccount) {
     store.telegram.tonConnectUI.openModal();
+
+    return;
   }
+
+  const newAmountValue = parseFloat((amount.value - 0.1).toFixed(1));
   
-  if (amount.value - 0.1 >= (min_bet.value)) {
-    amount.value = parseFloat((amount.value - 0.1).toFixed(1))
+  if (newAmountValue >= (min_bet.value)) {
+    amount.value = newAmountValue
   }
 }
 
