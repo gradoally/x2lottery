@@ -60,12 +60,20 @@ const viewTransaction = () => {
 }
 
 const incrementAmount = () => {
+  if(!store.telegram.walletAccount) {
+    store.telegram.tonConnectUI.openModal();
+  }
+
   if (amount.value + 0.1 <= (max_bet.value)) {
     amount.value = parseFloat((amount.value + 0.1).toFixed(1))
   }
 }
 
 const decrementAmount = () => {
+  if(!store.telegram.walletAccount) {
+    store.telegram.tonConnectUI.openModal();
+  }
+  
   if (amount.value - 0.1 >= (min_bet.value)) {
     amount.value = parseFloat((amount.value - 0.1).toFixed(1))
   }
@@ -98,7 +106,7 @@ onMounted(async () => {
 <template>
   <div class="text-center flex flex-col h-full">
     <div class="flex-1">
-      <div class="text-center text-3xl uppercase p-5">
+      <div class="text-center text-3xl uppercase p-1">
         <button id="ton-connect-button" type="button"></button>
       </div>
       <div class="flex flex-col justify-center content-center">
@@ -107,7 +115,7 @@ onMounted(async () => {
             <div id="front" @click="playGame()"><img src="/icon.png" class="pulse h-[30vh]"></div>
           </div>
         </div>
-        <div class="mt-6">
+        <div class="mt-1">
           <form class="max-w-xs mx-auto">
             <label for="quantity-input" class="block mb-2 text-sm font-medium uppercase text-white">Your bet</label>
             <div class="flex justify-center">
@@ -176,7 +184,7 @@ onMounted(async () => {
     </div>
     <div class="flex flex-col text-xs justify-center">
       <p>Made with ♡ by <a href="https://t.me/gradoally" target="_blank" class="underline">Gradoally</a></p>
-      <p>Secured <a :href="contractLink" target="_blank" class="underline">on-chain</a></p>
+      <p class="mt-1">Secured <a :href="contractLink" target="_blank" class="underline">on-chain</a></p>
     </div>
   </div>
 
