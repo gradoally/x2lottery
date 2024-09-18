@@ -40,7 +40,7 @@ const playGame = async () => {
     const hapticFeedback = initHapticFeedback();
 
     hapticFeedback.impactOccurred('heavy');
-  } catch {}
+  } catch { }
 
   lastTransactionId = await store.telegram.playGame(amount.value);
 
@@ -71,6 +71,10 @@ const decrementAmount = () => {
   }
 }
 
+const contractLink = computed(() => {
+  return `https://tonviewer.com/${import.meta.env.VITE_TON_CONTRACT_ADDRESS}`;
+})
+
 onMounted(async () => {
   await store.telegram.initConnectWalletButton('ton-connect-button')
 
@@ -93,84 +97,86 @@ onMounted(async () => {
 
 <template>
   <div class="text-center flex flex-col h-full">
-    <div class="text-center text-3xl uppercase p-5">
-      <button id="ton-connect-button" type="button"></button>
-    </div>
-    <div class="flex flex-col justify-center content-center">
-      <div class="flex justify-center">
-        <div>
-          <div id="front" @click="playGame()"><img src="/icon.png" class="pulse h-[30vh]"></div>
-        </div>
+    <div class="flex-1">
+      <div class="text-center text-3xl uppercase p-5">
+        <button id="ton-connect-button" type="button"></button>
       </div>
-      <div class="mt-6">
-        <form class="max-w-xs mx-auto">
-          <label for="quantity-input" class="block mb-2 text-sm font-medium uppercase text-white">Your bet</label>
-          <div class="flex justify-center">
-            <div class="relative flex items-center max-w-[8rem]">
-
-              <a @click="decrementAmount()"
-                class="bg-blue-800 0 border-blue-900 rounded-s-lg p-3 h-11 mr-1">
-                <svg class="w-3 h-3 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                  fill="none" viewBox="0 0 18 2">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M1 1h16" />
-                </svg>
-              </a>
-
-              <input type="number" v-model="amount" data-input-counter aria-describedby="helper-text-explanation"
-                class="bg-blue-50 border-x-0 h-11 focus:border-none text-center text-gray-900 font-bold text-sm block w-full py-2.5"
-                placeholder="1" required />
-
-              <a @click="incrementAmount()"
-                class="bg-blue-800 0 border-blue-900 rounded-e-lg p-3 h-11 ml-1">
-                <svg class="w-3 h-3 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                  fill="none" viewBox="0 0 18 18">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 1v16M1 9h16" />
-                </svg>
-              </a>
-
-            </div>
+      <div class="flex flex-col justify-center content-center">
+        <div class="flex justify-center">
+          <div>
+            <div id="front" @click="playGame()"><img src="/icon.png" class="pulse h-[30vh]"></div>
           </div>
-
-          <p id="helper-text-explanation" class="mt-4 text-sm text-gray-400">Min: {{ min_bet }} TON - Max: {{ max_bet }}
-            TON</p>
-        </form>
-
-        <div class="mt-5">
-          <Button @click="playGame()" :disabled="!store.telegram.walletAccount">
-            Place your bet
-          </Button>
         </div>
-
-
-        <div v-if="store.telegram.walletAccount" class="mt-8 text-xs">
-          <div class="font-black uppercase text-[10px]">Your balance</div>
-          <div class="font-black text-lg">
+        <div class="mt-6">
+          <form class="max-w-xs mx-auto">
+            <label for="quantity-input" class="block mb-2 text-sm font-medium uppercase text-white">Your bet</label>
             <div class="flex justify-center">
-              <div>
-                {{ currentBalance }} TON
+              <div class="relative flex items-center max-w-[8rem]">
+
+                <a @click="decrementAmount()" class="bg-blue-800 0 border-blue-900 rounded-s-lg p-3 h-11 mr-1">
+                  <svg class="w-3 h-3 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    fill="none" viewBox="0 0 18 2">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M1 1h16" />
+                  </svg>
+                </a>
+
+                <input type="number" v-model="amount" data-input-counter aria-describedby="helper-text-explanation"
+                  class="bg-blue-50 border-x-0 h-11 focus:border-none text-center text-gray-900 font-bold text-sm block w-full py-2.5"
+                  placeholder="1" required />
+
+                <a @click="incrementAmount()" class="bg-blue-800 0 border-blue-900 rounded-e-lg p-3 h-11 ml-1">
+                  <svg class="w-3 h-3 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    fill="none" viewBox="0 0 18 18">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9 1v16M1 9h16" />
+                  </svg>
+                </a>
+
               </div>
-              <div class="w-5">
-                <svg v-if="loading" class="animate-spin ml-3 h-7 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
-                  viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                  </path>
-                </svg>
+            </div>
+
+            <p id="helper-text-explanation" class="mt-4 text-sm text-gray-400">Min: {{ min_bet }} TON - Max: {{ max_bet
+              }}
+              TON</p>
+          </form>
+
+          <div class="mt-5">
+            <Button @click="playGame()" :disabled="!store.telegram.walletAccount">
+              Place your bet
+            </Button>
+          </div>
+
+
+          <div v-if="store.telegram.walletAccount" class="mt-8 text-xs">
+            <div class="font-black uppercase text-[10px]">Your balance</div>
+            <div class="font-black text-lg">
+              <div class="flex justify-center">
+                <div>
+                  {{ currentBalance }} TON
+                </div>
+                <div class="w-5">
+                  <svg v-if="loading" class="animate-spin ml-3 h-7 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                    fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                    </path>
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div v-if="!store.telegram.walletAccount" class="mt-4 text-xs text-orange-500">
-          Connect your TON wallet to play
+          <div v-if="!store.telegram.walletAccount" class="mt-4 text-xs text-orange-500">
+            Connect your TON wallet to play
+          </div>
         </div>
       </div>
     </div>
-    <div class="flex justify-center">
-      <!-- footer -->
+    <div class="flex flex-col text-xs justify-center">
+      <p>Made with ♡ by <a href="https://t.me/gradoally" target="_blank" class="underline">Gradoally</a></p>
+      <p>Secured <a :href="contractLink" target="_blank" class="underline">on-chain</a></p>
     </div>
   </div>
 
