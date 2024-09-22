@@ -54,7 +54,6 @@ export const Telegram: Reactive<Telegram> = reactive<Telegram>({
 
     this.tonConnectUI.uiOptions = {
       actionsConfiguration: {
-        returnStrategy: 'back',
         twaReturnUrl: import.meta.env.VITE_TELEGRAM_BOT_URL,
       }
     } as TonConnectUiOptions;
