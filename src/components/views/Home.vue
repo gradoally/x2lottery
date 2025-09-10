@@ -191,7 +191,7 @@ onMounted(async () => {
       </div>
     </div>
     <div class="flex flex-col text-xs justify-center">
-      <p>Made with ♡ by <a href="https://t.me/gradoally" target="_blank" class="underline">Gradoally</a></p>
+      <p>Created with ♡ by <a href="https://t.me/bigbangbusiness" target="_blank" class="underline">Big Bang</a></p>
       <p class="mt-1">Secured <a :href="contractLink" target="_blank" class="underline">on-chain</a></p>
     </div>
   </div>
